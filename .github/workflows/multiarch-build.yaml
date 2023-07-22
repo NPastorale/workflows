@@ -38,4 +38,4 @@ jobs:
           docker buildx build --push \
             --tag ${{ inputs.username }}/${{ github.event.repository.name }}:${{ env.RELEASE_VERSION }} \
             --tag ${{ inputs.username }}/${{ github.event.repository.name }}:latest \
-            --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 .
+            --platform linux/amd64,linux/arm64 .

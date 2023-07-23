@@ -5,11 +5,11 @@ on:
     outputs:
       release-version:
         description: "Generate a release version from the current tag"
-        value: ${{ jobs.get-version-from-tag.outputs.output1 }}
+        value: ${{ jobs.get-version-from-tag.outputs.release-version }}
 
 jobs:
   get-version-from-tag:
     runs-on: ubuntu-latest
     steps:
       - name: Set release version
-        run: echo -n "${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT
+        run: echo -n "release-version=${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT

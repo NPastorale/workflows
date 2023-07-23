@@ -1,0 +1,32 @@
+name: Get release version from tag
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        required: true
+        description: Name of the package for which the latest available version wants to be known
+        type: string
+    outputs:
+      release-version:
+        description: "Generate a release version from the latest package available to the Alpine repositories selected for the query"
+        value: ${{ jobs.get-version-from-package.outputs.release-version }}
+
+jobs:
+  get-version-from-package:
+    runs-on: ubuntu-latest
+    outputs:
+      release-version: ${{ steps.release-version.outputs.release-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          sparse-checkout: |
+            Dockerfile
+          sparse-checkout-cone-mode: false
+      - name: Set release version
+        id: release-version
+        run: |
+          ALPINE_VERSION=$(grep FROM Dockerfile | cut -d " " -f 2 | cut -d ":" -f 2 | cut -d "." -f 1,2)
+          PACKAGE_VERSION=$(curl -s https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/main/x86_64/APKINDEX.tar.gz | tar -Oxz 2>/dev/null | grep -A 1 --text '^P:${{ inputs.package-name }}$' | tail -n 1 | cut -d ':' -f 2)
+          echo "release-version=${PACKAGE_VERSION}" >>$GITHUB_OUTPUT

@@ -1,0 +1,15 @@
+name: Get release version from tag
+
+on:
+  workflow_call:
+    outputs:
+      release-version:
+        description: "Generate a release version from the current tag"
+        value: ${{ jobs.get-version-from-tag.outputs.output1 }}
+
+jobs:
+  get-version-from-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set release version
+        run: echo "${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT

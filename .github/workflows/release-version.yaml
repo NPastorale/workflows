@@ -10,6 +10,9 @@ on:
 jobs:
   get-version-from-tag:
     runs-on: ubuntu-latest
+    outputs:
+      release-version: ${{ steps.release-version.outputs.release-version }}
     steps:
       - name: Set release version
+        id: release-version
         run: echo "release-version=${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT && echo $GITHUB_OUTPUT

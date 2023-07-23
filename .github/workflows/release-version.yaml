@@ -12,4 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set release version
-        run: echo "${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT
+        run: echo -n "${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT

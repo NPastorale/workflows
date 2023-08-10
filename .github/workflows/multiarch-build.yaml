@@ -48,3 +48,5 @@ jobs:
           tags: |
             ${{ inputs.username }}/${{ github.event.repository.name }}:${{ inputs.release-version }}
             ${{ inputs.username }}/${{ github.event.repository.name }}:latest
+            ghcr.io/${{ inputs.username }}/${{ github.event.repository.name }}:${{ inputs.release-version }}
+            ghcr.io/${{ inputs.username }}/${{ github.event.repository.name }}:latest

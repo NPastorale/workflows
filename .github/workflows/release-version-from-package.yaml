@@ -34,4 +34,7 @@ jobs:
         run: |
           ALPINE_VERSION=$(grep FROM ${{ inputs.dockerfile }} | cut -d " " -f 2 | cut -d ":" -f 2 | cut -d "." -f 1,2)
           PACKAGE_VERSION=$(curl -s https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/main/x86_64/APKINDEX.tar.gz | tar -Oxz 2>/dev/null | grep -A 1 --text '^P:${{ inputs.package-name }}$' | tail -n 1 | cut -d ':' -f 2)
+          [ -z "$PACKAGE_VERSION" ] && PACKAGE_VERSION=$(curl -s https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/community/x86_64/APKINDEX.tar.gz | tar -Oxz 2>/dev/null | grep -A 1 --text '^P:${{ inputs.package-name }}$' | tail -n 1 | cut -d ':' -f 2)
+          [ -z "$PACKAGE_VERSION" ] && PACKAGE_VERSION=$(curl -s https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/releases/x86_64/APKINDEX.tar.gz | tar -Oxz 2>/dev/null | grep -A 1 --text '^P:${{ inputs.package-name }}$' | tail -n 1 | cut -d ':' -f 2)
+          [ -z "$PACKAGE_VERSION" ] && echo "PACKAGE_VERSION could not be defined" ; exit 1
           echo "release-version=${PACKAGE_VERSION}" >>$GITHUB_OUTPUT

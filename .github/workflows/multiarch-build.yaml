@@ -7,6 +7,10 @@ on:
         required: false
         description: "Path to the Dockerfile"
         type: string
+      package:
+        required: true
+        description: "Package name to utilise for pushing images to the registry"
+        type: string
       username:
         required: true
         description: "Username to utilise for pushing images to the registry"
@@ -53,7 +57,7 @@ jobs:
           file: ${{ inputs.dockerfile }}
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ inputs.username }}/${{ github.event.repository.name }}:${{ inputs.release-version }}
-            ${{ inputs.username }}/${{ github.event.repository.name }}:latest
-            ghcr.io/${{ inputs.username }}/${{ github.event.repository.name }}:${{ inputs.release-version }}
-            ghcr.io/${{ inputs.username }}/${{ github.event.repository.name }}:latest
+            ${{ inputs.username }}/${{ inputs.package }}:${{ inputs.release-version }}
+            ${{ inputs.username }}/${{ inputs.package }}:latest
+            ghcr.io/${{ inputs.username }}/${{ inputs.package }}:${{ inputs.release-version }}
+            ghcr.io/${{ inputs.username }}/${{ inputs.package }}:latest

@@ -3,6 +3,10 @@ name: Multiarch build
 on:
   workflow_call:
     inputs:
+      dockerfile:
+        required: false
+        description: "Path to the Dockerfile"
+        type: string
       username:
         required: true
         description: "Username to utilise for pushing images to the registry"
@@ -46,6 +50,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: ${{ github.event_name != 'pull_request' }}
+          file: ${{ inputs.dockerfile }}
           platforms: linux/amd64,linux/arm64
           tags: |
             ${{ inputs.username }}/${{ github.event.repository.name }}:${{ inputs.release-version }}

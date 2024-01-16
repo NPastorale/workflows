@@ -3,6 +3,11 @@ name: Get release version from tag
 on:
   workflow_call:
     inputs:
+      dockerfile:
+        required: false
+        description: "Path to the Dockerfile"
+        type: string
+        default: "Dockerfile"
       package-name:
         required: true
         description: Name of the package for which the latest available version wants to be known
@@ -27,6 +32,6 @@ jobs:
       - name: Set release version
         id: release-version
         run: |
-          ALPINE_VERSION=$(grep FROM Dockerfile | cut -d " " -f 2 | cut -d ":" -f 2 | cut -d "." -f 1,2)
+          ALPINE_VERSION=$(grep FROM ${{ inputs.dockerfile }} | cut -d " " -f 2 | cut -d ":" -f 2 | cut -d "." -f 1,2)
           PACKAGE_VERSION=$(curl -s https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_VERSION}/main/x86_64/APKINDEX.tar.gz | tar -Oxz 2>/dev/null | grep -A 1 --text '^P:${{ inputs.package-name }}$' | tail -n 1 | cut -d ':' -f 2)
           echo "release-version=${PACKAGE_VERSION}" >>$GITHUB_OUTPUT

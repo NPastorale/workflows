@@ -2,7 +2,7 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:best-practices",
-        ":assignAndReview('npastorale')",
+        ":assignAndReview(npastorale)",
         ":automergeDigest",
         ":automergePr",
         ":automergeRequireAllStatusChecks",
@@ -11,11 +11,5 @@
         ":separatePatchReleases",
         ":rebaseStalePrs",
         "regexManagers:dockerfileVersions"
-    ],
-    "assignees": [
-        "npastorale"
-    ],
-    "reviewers": [
-        "npastorale"
     ]
 }

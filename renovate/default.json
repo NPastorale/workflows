@@ -11,5 +11,11 @@
         ":separatePatchReleases",
         ":rebaseStalePrs",
         "regexManagers:dockerfileVersions"
+    ],
+    "assignees": [
+        "npastorale"
+    ],
+    "reviewers": [
+        "npastorale"
     ]
 }

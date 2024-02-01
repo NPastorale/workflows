@@ -10,6 +10,6 @@
         ":disableRateLimiting",
         ":separatePatchReleases",
         ":rebaseStalePrs",
-        "regexManagers:dockerfileVersion"
+        "regexManagers:dockerfileVersions"
     ]
 }

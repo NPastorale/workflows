@@ -11,13 +11,13 @@ on:
         required: true
         description: "Image name to utilise"
         type: string
+      package:
+        required: true
+        description: "Package name for which the version wants to be known"
+        type: string
       username:
         required: true
         description: "Username to utilise for pushing images to the registry"
-        type: string
-      release-version:
-        required: true
-        description: "The version to utilise when tagging the resulting image"
         type: string
     secrets:
       access-token:
@@ -50,6 +50,18 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Set release version
+        id: release-version
+        run: |
+          set -e
+          PACKAGE_VERSION=$(grep -i "ENV ${{ inputs.image }}_VERSION" ${{ inputs.dockerfile }} | cut -d "=" -f 2 | sed 's/"//g')
+          if [ -z "$PACKAGE_VERSION" ]; then
+            echo "Error: Unable to extract package version from Dockerfile."
+            exit 1
+          fi
+          echo "release-version=${PACKAGE_VERSION}" >> $GITHUB_ENV
+          echo "Successfully extracted version: $PACKAGE_VERSION"
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -58,8 +70,9 @@ jobs:
           platforms: linux/amd64,linux/arm64
           build-args: |
             BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            REVISION=$(git rev-parse HEAD)
           tags: |
-            ${{ inputs.username }}/${{ inputs.image }}:${{ inputs.release-version }}
+            ${{ inputs.username }}/${{ inputs.image }}:${{ steps.release-version.outputs.release_version }}
             ${{ inputs.username }}/${{ inputs.image }}:latest
-            ghcr.io/${{ inputs.username }}/${{ inputs.image }}:${{ inputs.release-version }}
+            ghcr.io/${{ inputs.username }}/${{ inputs.image }}:${{ steps.release-version.outputs.release_version }}
             ghcr.io/${{ inputs.username }}/${{ inputs.image }}:latest

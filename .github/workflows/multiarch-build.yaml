@@ -50,6 +50,13 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            Dockerfile
+          sparse-checkout-cone-mode: false
+
       - name: Set release version
         id: release-version
         run: |

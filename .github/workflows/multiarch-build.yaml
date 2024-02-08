@@ -102,6 +102,7 @@ jobs:
           build-args: |
             BUILD_DATE=${{ env.build-date }}
             REVISION=${{ env.revision }}
+            VERSION=${{ env.release-version }}
           tags: |
             ${{ inputs.username }}/${{ inputs.image }}:${{ env.release-version }}
             ${{ inputs.username }}/${{ inputs.image }}:latest

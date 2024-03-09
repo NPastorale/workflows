@@ -54,13 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-
-      - name: Git submodule update
-        run: |
-          git pull --recurse-submodules
-          git submodule update --remote --recursive
-          tree
+          submodules: true
 
       - name: Set release version
         id: release-version

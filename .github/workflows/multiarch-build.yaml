@@ -55,6 +55,11 @@ jobs:
         with:
           submodules: true
 
+      - name: Git submodule update
+        run: |
+          git pull --recurse-submodules
+          git submodule update --remote --recursive
+
       - name: Set release version
         id: release-version
         run: |

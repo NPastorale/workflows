@@ -56,6 +56,7 @@ jobs:
           sparse-checkout: |
             Dockerfile
           sparse-checkout-cone-mode: false
+          submodules: true
 
       - name: Set release version
         id: release-version

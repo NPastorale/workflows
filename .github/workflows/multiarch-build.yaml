@@ -53,9 +53,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          sparse-checkout: |
-            Dockerfile
-          sparse-checkout-cone-mode: false
           submodules: true
 
       - name: Set release version

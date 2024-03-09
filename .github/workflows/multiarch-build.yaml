@@ -1,6 +1,7 @@
 name: Multiarch build
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       dockerfile:

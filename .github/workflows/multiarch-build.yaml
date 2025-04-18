@@ -90,6 +90,10 @@ jobs:
         run: |
           set -e
           DOCKERFILE_PATH="${{ inputs.dockerfile || 'Dockerfile' }}"
+          if [ ! -f "${DOCKERFILE_PATH}" ]; then
+            echo "Error: Dockerfile not found at ${DOCKERFILE_PATH}"
+            exit 1
+          fi
           RELEASE_VERSION=$(grep -i "ENV ${{ inputs.package }}_VERSION" "${DOCKERFILE_PATH}" | head -n 1 | cut -d "=" -f 2 | sed 's/"//g')
           if [ -z "$RELEASE_VERSION" ]; then
             echo "Error: Unable to extract package version for '${{ inputs.package }}' from ${DOCKERFILE_PATH}."
@@ -126,6 +130,12 @@ jobs:
           echo "Successfully set revision: $REVISION"
         shell: bash
 
+      - name: Prepare lowercase repository owner
+        id: prep
+        run: |
+          echo "LOWERCASE_REPO_OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        shell: bash
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -139,5 +149,5 @@ jobs:
           tags: |
             ${{ inputs.username }}/${{ inputs.image }}:${{ env.release-version }}
             ${{ inputs.username }}/${{ inputs.image }}:latest
-            ghcr.io/${{ github.repository_owner }}/${{ inputs.image }}:${{ env.release-version }}
-            ghcr.io/${{ github.repository_owner }}/${{ inputs.image }}:latest
+            ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ inputs.image }}:${{ env.release-version }}
+            ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ inputs.image }}:latest

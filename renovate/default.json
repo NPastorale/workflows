@@ -2,7 +2,7 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:best-practices",
-        ":assignAndReview(npastorale)",
+        ":assignee(npastorale)",
         ":automergeDigest",
         ":automergePr",
         ":automergeRequireAllStatusChecks",
